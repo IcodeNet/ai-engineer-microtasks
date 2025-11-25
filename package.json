@@ -1,0 +1,23 @@
+{
+  "name": "ai-engineer-microtasks",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/IcodeNet/ai-engineer-microtasks#readme",
+  "bugs": {
+    "url": "https://github.com/IcodeNet/ai-engineer-microtasks/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IcodeNet/ai-engineer-microtasks.git"
+  },
+  "license": "MIT",
+  "author": "Byron Thanopoulos",
+  "type": "commonjs",
+  "main": "src/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "fastify": "^5.6.2"
+  }
+}

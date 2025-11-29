@@ -281,35 +281,290 @@ By completing this micro-task, you will be able to:
   README.md
 ```
 
-## How to Run
+## 🚀 Quick Setup (First Time)
 
-1. Create and activate a virtual environment (recommended):
+### Prerequisites
 
+- **Python 3.10+** installed
+- **direnv** (optional but recommended for auto-activation on Mac/Linux/WSL)
+  - **Note**: On Windows 11, direnv works best through WSL. Native Windows PowerShell/CMD users can use manual activation.
+
+### Step 1: Install direnv (Optional but Recommended)
+
+**Mac:**
+```bash
+brew install direnv
+```
+
+**Linux:**
+```bash
+# Ubuntu/Debian
+sudo apt install direnv
+
+# Fedora
+sudo dnf install direnv
+```
+
+**Windows 11:**
+
+direnv works best on Windows through **WSL (Windows Subsystem for Linux)**:
+
+1. **Install WSL** (if not already installed):
+   ```powershell
+   wsl --install
+   ```
+   Restart your computer after installation.
+
+2. **Inside WSL**, install direnv:
    ```bash
-   python -m venv .venv
-   source .venv/bin/activate      # Linux/macOS
-   # .venv\Scripts\activate       # Windows
+   sudo apt update
+   sudo apt install direnv
    ```
 
-2. Install dependencies:
-
+3. **Configure direnv hook** in WSL (add to `~/.bashrc` or `~/.zshrc`):
    ```bash
-   pip install -r requirements.txt
+   eval "$(direnv hook bash)"  # or "zsh" for zsh
+   source ~/.bashrc
    ```
 
-3. Train the model:
+**Alternative for Windows (without WSL):**
 
+If you're using PowerShell/CMD (not WSL), direnv auto-activation won't work. You can still use manual activation:
+```powershell
+# PowerShell
+.venv\Scripts\Activate.ps1
+
+# CMD
+.venv\Scripts\activate.bat
+```
+
+**Configure direnv hook** (Mac/Linux - add to `~/.zshrc` or `~/.bashrc`):
+```bash
+eval "$(direnv hook zsh)"  # or "bash" for bash
+source ~/.zshrc
+```
+
+### Step 2: Create Virtual Environment
+
+**Option A: Using `uv` (Recommended - Fastest)**
+
+**Mac/Linux/WSL:**
+```bash
+uv venv
+uv pip install -r requirements.txt
+```
+
+**Windows (PowerShell/CMD):**
+```powershell
+uv venv
+uv pip install -r requirements.txt
+```
+
+**Option B: Using standard Python**
+
+**Mac/Linux/WSL:**
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+**Windows (PowerShell):**
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+**Windows (CMD):**
+```cmd
+python -m venv .venv
+.venv\Scripts\activate.bat
+pip install -r requirements.txt
+```
+
+**Note for Windows PowerShell:** If you get an execution policy error, run:
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+### Step 3: Allow .envrc (One-Time Setup)
+
+**Mac/Linux/WSL only:**
+
+If you have direnv installed, allow the `.envrc` file:
+
+```bash
+direnv allow
+```
+
+This enables automatic environment activation when you `cd` into this directory.
+
+**What this does:**
+- ✅ Automatically activates `.venv` when you enter the directory
+- ✅ Automatically deactivates when you leave
+- ✅ No need to manually run `source .venv/bin/activate`
+
+**Windows PowerShell/CMD:**
+
+The `.envrc` file uses Unix shell syntax and won't work in native Windows PowerShell/CMD. Use manual activation instead (see Step 4 for verification). If you're using WSL, direnv will work normally.
+
+### Step 4: Verify Setup
+
+**Mac/Linux/WSL:**
+```bash
+# cd out and back in to test auto-activation
+cd ..
+cd 04.micro-task-1.1-python-sklearn-baseline
+
+# Check Python is using venv
+which python  # Should show: .../.venv/bin/python
+python --version  # Should show Python 3.x
+```
+
+**Windows (PowerShell):**
+```powershell
+# cd out and back in to test auto-activation
+cd ..
+cd 04.micro-task-1.1-python-sklearn-baseline
+
+# Check Python is using venv
+where.exe python  # Should show: ...\.venv\Scripts\python.exe
+python --version  # Should show Python 3.x
+```
+
+**Windows (CMD):**
+```cmd
+cd ..
+cd 04.micro-task-1.1-python-sklearn-baseline
+
+where python
+python --version
+```
+
+## 🎯 How to Run
+
+### Train the Model
+
+```bash
+python train.py
+```
+
+You should see output including test accuracy and a message indicating where the model was saved.
+
+### Run a Prediction
+
+```bash
+python predict.py "this is great"
+```
+
+## 🔄 Auto-Activation with direnv
+
+**If you have direnv set up (Mac/Linux/WSL):**
+
+- **Auto-activate**: Just `cd` into the project directory
+- **Auto-deactivate**: `cd` out of the directory
+- **No manual activation needed**: The `.envrc` file handles it automatically
+
+**If you don't have direnv (or using Windows PowerShell/CMD):**
+
+You can still use manual activation:
+
+**Mac/Linux/WSL:**
+```bash
+source .venv/bin/activate
+deactivate  # When done
+```
+
+**Windows PowerShell:**
+```powershell
+.venv\Scripts\Activate.ps1
+deactivate  # When done
+```
+
+**Windows CMD:**
+```cmd
+.venv\Scripts\activate.bat
+deactivate  # When done
+```
+
+## 🛠️ Troubleshooting
+
+### direnv not working?
+
+1. **Check direnv is installed:**
    ```bash
-   python train.py
+   direnv --version
    ```
 
-   You should see output including test accuracy and a message indicating where the model was saved.
-
-4. Run a prediction:
-
+2. **Check direnv hook is configured:**
    ```bash
-   python predict.py "this is great"
+   grep "direnv hook" ~/.zshrc  # or ~/.bashrc
    ```
+
+3. **Make sure .venv exists:**
+   ```bash
+   ls -la .venv
+   ```
+
+4. **Re-allow .envrc:**
+   ```bash
+   direnv allow
+   ```
+
+### Virtual environment not activating?
+
+**Mac/Linux/WSL:**
+- **Manual activation still works:**
+  ```bash
+  source .venv/bin/activate
+  ```
+
+- **Check .venv exists:**
+  ```bash
+  ls -la .venv/bin/python
+  ```
+
+- **Recreate if needed:**
+  ```bash
+  rm -rf .venv
+  python3 -m venv .venv
+  source .venv/bin/activate
+  pip install -r requirements.txt
+  ```
+
+**Windows:**
+- **Manual activation:**
+  ```powershell
+  # PowerShell
+  .venv\Scripts\Activate.ps1
+  
+  # CMD
+  .venv\Scripts\activate.bat
+  ```
+
+- **Check .venv exists:**
+  ```powershell
+  # PowerShell
+  Test-Path .venv\Scripts\python.exe
+  
+  # CMD
+  dir .venv\Scripts\python.exe
+  ```
+
+- **Recreate if needed:**
+  ```powershell
+  # PowerShell
+  Remove-Item -Recurse -Force .venv
+  python -m venv .venv
+  .venv\Scripts\Activate.ps1
+  pip install -r requirements.txt
+  ```
+
+- **PowerShell execution policy error?**
+  ```powershell
+  Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+  ```
 
    Example output:
 

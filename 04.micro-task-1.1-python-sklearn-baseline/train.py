@@ -54,14 +54,32 @@ def build_model():
 def main():
     X, y = get_data()
 
+    # Split data into training (70%) and testing (30%) sets
+    # See: file://./docs/train_test_split.md
+    # Docs: https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html
+    # - test_size=0.3: 30% for testing, 70% for training
+    # - random_state=42: ensures reproducible splits
+    # - stratify=y: maintains class balance (50/50 positive/negative) in both sets
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.3, random_state=42, stratify=y
     )
-
+    
+    # Build the model pipeline (TfidfVectorizer + LogisticRegression)
+    # See: file://./docs/build_train_predict.md
+    # Docs: https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html
+    # The pipeline combines text vectorization and classification into one model
     model = build_model()
+    
+    # Train the model on training data
+    # See: file://./docs/build_train_predict.md
+    # Docs: https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline.fit
+    # This learns: (1) vocabulary from texts, (2) patterns to classify positive/negative
     model.fit(X_train, y_train)
 
-    # simple evaluation
+    # Evaluate the model on test data (unseen examples)
+    # See: file://./docs/build_train_predict.md
+    # Docs: https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline.predict
+    # Returns predictions for the 3 test examples
     y_pred = model.predict(X_test)
 
     print("\n=== y_test (true labels) ===")

@@ -1,7 +1,6 @@
 # train.py - Text Classification with Cleaning, Tuning, and Model Versioning
 
 import json
-import re
 from datetime import datetime
 from pathlib import Path
 
@@ -12,26 +11,10 @@ from sklearn.metrics import accuracy_score, classification_report
 from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.pipeline import Pipeline
 
+from text_utils import clean_text
+
 # Manual semantic version for this model line
 MODEL_VERSION = "1.0.0"
-
-
-def clean_text(text: str) -> str:
-    """
-    Basic text cleaning / normalisation.
-
-    Steps:
-    - Lowercase
-    - Remove punctuation and non-alphanumeric characters (keep letters, numbers, spaces)
-    - Collapse multiple spaces into a single space and strip leading/trailing spaces
-    """
-    # 1. Lowercase
-    text = text.lower()
-    # 2. Remove punctuation / symbols (keep a–z, 0–9 and whitespace)
-    text = re.sub(r"[^a-z0-9\s]", "", text)
-    # 3. Collapse multiple spaces
-    text = re.sub(r"\s+", " ", text).strip()
-    return text
 
 
 def get_data():

@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "saved_at": "2025-11-30T12:20:11.729142Z",
+  "saved_at": "2025-11-30T12:50:17.623140Z",
   "best_params": {
     "clf__C": 0.1,
     "clf__max_iter": 500

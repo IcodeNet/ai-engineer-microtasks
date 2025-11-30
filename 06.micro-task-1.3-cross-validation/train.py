@@ -1,6 +1,5 @@
 # train.py - Text Classification with Text Cleaning + Cross-Validation
 
-import re
 from pathlib import Path
 
 import joblib
@@ -10,23 +9,7 @@ from sklearn.metrics import accuracy_score, classification_report
 from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.pipeline import Pipeline
 
-
-def clean_text(text: str) -> str:
-    """
-    Basic text cleaning / normalisation.
-
-    Steps:
-    - Lowercase
-    - Remove punctuation and non-alphanumeric characters (keep letters, numbers, spaces)
-    - Collapse multiple spaces into a single space and strip leading/trailing spaces
-    """
-    # 1. Lowercase
-    text = text.lower()
-    # 2. Remove punctuation / symbols (keep a–z, 0–9 and whitespace)
-    text = re.sub(r"[^a-z0-9\s]", "", text)
-    # 3. Collapse multiple spaces
-    text = re.sub(r"\s+", " ", text).strip()
-    return text
+from text_utils import clean_text
 
 
 def get_data():

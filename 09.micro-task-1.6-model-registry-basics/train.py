@@ -1,7 +1,6 @@
 # train.py - Model Training with Registry Storage
 
 import json
-import re
 from datetime import datetime
 from pathlib import Path
 
@@ -13,15 +12,9 @@ from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.pipeline import Pipeline
 
 from registry import ModelRegistry
+from text_utils import clean_text
 
 MODEL_VERSION = "1.0.0"
-
-
-def clean_text(text: str) -> str:
-    text = text.lower()
-    text = re.sub(r"[^a-z0-9\s]", "", text)
-    text = re.sub(r"\s+", " ", text).strip()
-    return text
 
 
 def get_data():

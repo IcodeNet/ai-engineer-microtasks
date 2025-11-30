@@ -2,8 +2,6 @@
 06.micro-task-1.3-cross-validation/LEARNING.md
 ```
 
-It continues the same clarity, structure, and tone as the previous documents.
-
 ---
 
 # **LEARNING.md – Micro-Task 1.3 (Cross-Validation)**
@@ -342,6 +340,16 @@ In this micro-task you learned:
 
 This knowledge is essential for any ML engineer.
 Cross-validation is one of the core tools used to select and validate models in real projects.
+
+
+# Next Steps
+
+After this micro-task, you are ready to:
+
+* Tune the model with hyperparameter search (e.g. GridSearchCV)
+* Start thinking about model versioning
+* Prepare for deploying the model behind an API
+
 
 ---
  

@@ -1,9 +1,6 @@
 ```
 07.micro-task-1.4-hyperparameter-tuning/LEARNING.md
 ```
-
-It follows the exact tone, clarity, and structure of the previous micro-task documents.
-
 ---
 
 # **LEARNING.md – Micro-Task 1.4 (Hyperparameter Tuning)**
@@ -38,6 +35,9 @@ These are learned from data automatically.
 Example:
 The Logistic Regression weights inside your model.
 
+**Explanation:**
+Logistic Regression weights are numerical values that the model learns during training. Each weight corresponds to how important a particular feature (word or text pattern) is for making predictions. For example, if the word "excellent" has a high positive weight, the model learned that this word strongly indicates a positive sentiment. If "terrible" has a high negative weight, the model learned it indicates negative sentiment. These weights are automatically adjusted during training as the model sees examples and learns which features are most useful for classification. You don't set these manually — the algorithm calculates them by finding the best values that minimize prediction errors on your training data.
+
 ### **B) Hyperparameters**
 
 These are settings **you choose**, not the model.
@@ -45,9 +45,18 @@ These are settings **you choose**, not the model.
 Examples:
 
 * how many iterations to run (`max_iter`)
+  **Explanation:** `max_iter` is the maximum number of iterations (training steps) the Logistic Regression algorithm will perform. Each iteration is one attempt to adjust the model's weights to better fit the data. Think of it like this: the algorithm starts with random weights, then on each iteration it looks at the training data, calculates how wrong its predictions are, and adjusts the weights slightly to improve. It repeats this process until either (1) the weights stop changing much (convergence), or (2) it reaches the `max_iter` limit. If `max_iter=500`, the algorithm stops after 500 attempts, even if it hasn't fully converged. Higher values (like 2000) give the model more chances to fine-tune its weights and learn complex patterns, but take longer to train. If you see a "convergence warning," it means the algorithm hit the `max_iter` limit before finding optimal weights — increasing `max_iter` usually fixes this.
+
 * how strong regularisation is (`C`)
+  **Explanation:** Regularisation prevents the model from overfitting (memorizing training data too closely). The `C` parameter controls this: **lower C** (like 0.1) means **stronger regularisation** (simpler model, less overfitting), while **higher C** (like 10.0) means **weaker regularisation** (more complex model, risk of overfitting). It's like a dial between "keep it simple" and "learn everything." Finding the right C is crucial for good performance.
+  
+  **Why is it called "C"?** The name comes from the mathematical formulation of Support Vector Machines (SVMs), where C was used as a constant in the optimization equation. Logistic Regression in scikit-learn uses the same naming convention for historical consistency. In the math, C represents the "cost" of misclassification — higher C means the model pays a higher cost for making mistakes, so it tries harder to fit the training data (weaker regularization). Think of C as the "cost constant" or "complexity constant."
+
 * what penalty type to use (`l2`, `l1`)
+  **Explanation:** These are different ways to apply regularisation. **L2 penalty** (also called "ridge") shrinks all weights proportionally — it's smooth and works well for most cases. **L1 penalty** (also called "lasso") can shrink some weights to exactly zero, effectively removing less important features. L1 is useful when you want feature selection (automatically ignoring irrelevant words), while L2 is gentler and usually preferred for text classification.
+
 * how TF-IDF creates features (`min_df`, `max_df`, `ngram_range`)
+  **Explanation:** TF-IDF (Term Frequency-Inverse Document Frequency) converts text into numerical features that your model can use. These hyperparameters control which words become features and how they're combined. **`min_df`** (minimum document frequency) ignores words that appear in fewer than X documents — useful for filtering out typos, rare words, or noise that won't help predictions. For example, `min_df=2` means a word must appear in at least 2 documents to be included. **`max_df`** (maximum document frequency) ignores words that appear in more than X% of documents — useful for filtering out common stop words like "the", "and", "is" that appear everywhere and don't help distinguish between classes. For example, `max_df=0.95` means words appearing in more than 95% of documents are ignored. **`ngram_range`** controls word combinations: `(1,1)` uses only single words (unigrams), `(1,2)` uses both single words and pairs of consecutive words (bigrams), like "very good" or "not bad". Bigrams can capture phrases and context that single words miss, potentially improving accuracy but creating more features (and slower training).
 
 Hyperparameters are like the **knobs** you turn to get better performance.
 
@@ -89,6 +98,8 @@ Example grid:
     "clf__penalty": ["l2"]
 }
 ```
+
+**What is the `clf__` prefix?** The `clf__` prefix tells Grid Search which step in your pipeline to tune. In your pipeline, the classifier step is named `"clf"` (short for "classifier"), so `clf__C` means "the C parameter of the clf step." The double underscore `__` is scikit-learn's syntax for accessing parameters inside a pipeline step. This allows you to tune hyperparameters of specific steps when you have a multi-step pipeline (like TF-IDF → Logistic Regression).
 
 Grid Search will:
 
@@ -396,4 +407,11 @@ In this micro-task you learned:
 Hyperparameter tuning is one of the easiest ways to improve models quickly and systematically.
 
 ---
- 
+
+
+ # Next Steps
+
+After this micro-task, you are ready to move from offline training to:
+*	Model versioning (naming and tracking model artefacts over time)
+*	Deploying the tuned model behind an API (FastAPI or Node/Fastify bridge)
+*	Connecting to your Node.js service layer so your Fastify micro-tasks call this tuned Python model.

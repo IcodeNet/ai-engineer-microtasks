@@ -1,0 +1,31 @@
+services:
+  python-api:
+    build:
+      context: ./python-api
+      dockerfile: Dockerfile
+    container_name: python-api
+    ports:
+      - "8000:8000"
+    # Note: Registry is baked into the image (see Dockerfile COPY registry/).
+    # Volume mount removed due to Docker Desktop Mac issues with special characters in folder names.
+    networks:
+      - app-network
+
+  fastify-service:
+    build:
+      context: ./fastify-service
+      dockerfile: Dockerfile
+    container_name: fastify-service
+    ports:
+      - "3000:3000"
+    depends_on:
+      - python-api
+    environment:
+      # URL used by Fastify to call the Python API
+      PYTHON_API_BASE_URL: http://python-api:8000
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

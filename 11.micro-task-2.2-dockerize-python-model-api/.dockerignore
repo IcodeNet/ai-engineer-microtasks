@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+env/
+build/
+dist/
+.eggs/
+
+# Note: registry/ is included in the image for this micro-task.
+# In the next microtask (docker-compose), you can mount it as a volume instead.
+
+.git/
+.gitignore
